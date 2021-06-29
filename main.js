@@ -2,8 +2,19 @@ const button = document.querySelector('button')
 const text = document.querySelector('.text')
 
 const recognition = createRecognition()
+let listening = false
 
-const createRecognition = () => {
+button.addEventListener('click', e => {
+  if (!recognition) return
+
+  listening ? recognition.stop() : recognition.start()
+  button.innerHTML = listening ? 'Pressione para ouvir' : 'Pare de ouvir'
+
+  button.classList.toggle('bp-purple-200')
+  button.classList.toggle('text-red-500')
+})
+
+function createRecognition() {
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition
   const recognition =
@@ -14,11 +25,13 @@ const createRecognition = () => {
     return null
   }
 
-  recognition.lang = 'pt-BR'
-  recognition.onStart = () => console.log('started')
-  recognition.onend = () => console.log('finished')
+  // recognition.lang = 'pt_BR'
+  recognition.lang = 'en'
+
+  recognition.onstart = () => (listening = true)
+  recognition.onend = () => (listening = false)
   recognition.onerror = e => console.log('error', e)
-  recognition.onresult = e => (text.innerHTML = e.result[0][0].transcript)
+  recognition.onresult = e => (text.innerHTML = e.results[0][0].transcript)
 
   return recognition
 }
