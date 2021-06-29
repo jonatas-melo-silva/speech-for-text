@@ -25,8 +25,8 @@ function createRecognition() {
     return null
   }
 
-  // recognition.lang = 'pt_BR'
-  recognition.lang = 'en'
+  recognition.lang = 'pt_BR'
+  // recognition.lang = 'en'
 
   recognition.onstart = () => (listening = true)
   recognition.onend = () => (listening = false)
